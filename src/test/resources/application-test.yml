@@ -1,0 +1,7 @@
+app:
+  exchangeRatesEndpoint: "http://localhost:9876"
+
+logging:
+  level:
+    fr:
+      alexandreroman: DEBUG

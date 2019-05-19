@@ -1,0 +1,8 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+
+app:
+  exchangeRatesEndpoint: "https://api.exchangeratesapi.io"
