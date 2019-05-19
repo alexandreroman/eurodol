@@ -1,0 +1,9 @@
+{
+  "short_name": "Eurodol",
+  "name": "Eurodol",
+  "theme_color": "#F5F5F5",
+  "background_color": "#F5F5F5",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/"
+}

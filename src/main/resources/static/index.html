@@ -1,0 +1,81 @@
+<!--
+  ~ Copyright (c) 2019 Pivotal Software, Inc.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <link rel="icon" href="/favicon.ico"/>
+    <link rel="icon" href="/favicon.png" type="image/png"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="theme-color" content="#F5F5F5"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui"/>
+    <title>Eurodol</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons"
+          rel="stylesheet"/>
+    <link href="/webjars/vuetify/dist/vuetify.css" rel="stylesheet"/>
+    <link href="/manifest.json" rel="manifest"/>
+</head>
+<body>
+<div id="app" style="display: none;">
+    <v-app>
+        <v-toolbar fixed app>
+            <v-toolbar-title>Eurodol</v-toolbar-title>
+        </v-toolbar>
+        <v-content class="ma-2">
+            <v-container>
+                <v-layout align-center justify-center>
+                    <v-flex style="max-width: 400px;">
+                        <v-card style="border-radius: 8px;">
+                            <v-form>
+                                <v-flex class="pa-3">
+                                    <v-text-field required type="number" v-model="amount" label="Amount"
+                                                  v-on:change="hideResults"></v-text-field>
+                                    <v-select required v-model="symbol" :items="symbols" label="Symbol"
+                                              v-on:change="hideResults"></v-select>
+                                </v-flex>
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn flat v-on:click="onConvert">Convert</v-btn>
+                                </v-card-actions>
+                            </v-form>
+                        </v-card>
+                        <v-card class="mt-3" style="border-radius: 8px;" v-if="showResults">
+                            <v-card-text style="font-size: 180%; font-weight: bold; text-align: center;">
+                                <span v-if="!showError">{{ symbolResult }}</span>
+                                <span v-if="!showError">{{ amountResult }}</span>
+                                <span v-if="showError" style="color: red;">Server error</span>
+                            </v-card-text>
+                        </v-card>
+                    </v-flex>
+                </v-layout>
+            </v-container>
+        </v-content>
+        <v-footer>
+            <v-spacer></v-spacer>
+            <div style="color: gray;" class="pl-2 pr-2">
+                Copyright &copy; 2019&nbsp;<a style="color: unset;" href="https://pivotal.io">Pivotal Software Inc.</a>
+            </div>
+        </v-footer>
+    </v-app>
+</div>
+<script src="/webjars/vue/dist/vue.js"></script>
+<script src="/webjars/vuetify/dist/vuetify.js"></script>
+<script src="/webjars/axios/dist/axios.js"></script>
+<script src="/js/app.js"></script>
+</body>
+</html>
