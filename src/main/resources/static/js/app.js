@@ -44,8 +44,11 @@ var app = new Vue({
                 this.showResults = true;
             });
         },
-        hideResults: function(e) {
+        onInputUpdated: function () {
             this.showResults = false;
+        },
+        onGetSourceCode: function () {
+            document.location = "https://github.com/alexandreroman/eurodol";
         }
     },
     mounted: function () {

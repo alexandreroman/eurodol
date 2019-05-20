@@ -35,6 +35,10 @@
     <v-app>
         <v-toolbar fixed app>
             <v-toolbar-title>Eurodol</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-toolbar-items>
+                <v-btn flat v-on:click="onGetSourceCode">Get source code</v-btn>
+            </v-toolbar-items>
         </v-toolbar>
         <v-content class="ma-2">
             <v-container>
@@ -44,9 +48,9 @@
                             <v-form>
                                 <v-flex class="pa-3">
                                     <v-text-field required type="number" v-model="amount" label="Amount"
-                                                  v-on:change="hideResults"></v-text-field>
+                                                  v-on:change="onInputUpdated"></v-text-field>
                                     <v-select required v-model="symbol" :items="symbols" label="Symbol"
-                                              v-on:change="hideResults"></v-select>
+                                              v-on:change="onInputUpdated"></v-select>
                                 </v-flex>
                                 <v-card-actions>
                                     <v-spacer></v-spacer>
