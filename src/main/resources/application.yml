@@ -5,4 +5,7 @@ management:
         include: health, info
 
 app:
+  apiEndpoint: ""
+  apiEnv: ""
+  apiKey: ""
   exchangeRatesEndpoint: "https://api.exchangeratesapi.io"

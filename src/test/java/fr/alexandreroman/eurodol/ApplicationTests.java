@@ -66,7 +66,7 @@ public class ApplicationTests {
                         .withHeader(HttpHeaders.EXPIRES,
                                 Instant.now().atOffset(ZoneOffset.UTC).plusSeconds(14400).format(DateTimeFormatter.RFC_1123_DATE_TIME))));
 
-        final String url = url().path("/api/convert").queryParam("amount", 1).queryParam("symbol", "USD").toUriString();
+        final String url = url().path("/api/v1/convert").queryParam("amount", 1).queryParam("symbol", "USD").toUriString();
         final ResponseEntity<CurrencyConversion> resp = restTemplate.getForEntity(url, CurrencyConversion.class);
         assertThat(resp.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(resp.getBody()).isNotNull();
@@ -86,7 +86,7 @@ public class ApplicationTests {
                         .withHeader(HttpHeaders.EXPIRES,
                                 Instant.now().atOffset(ZoneOffset.UTC).plusSeconds(14400).format(DateTimeFormatter.RFC_1123_DATE_TIME))));
 
-        final String url = url().path("/api/convert").queryParam("amount", 1).queryParam("symbol", "USD").toUriString();
+        final String url = url().path("/api/v1/convert").queryParam("amount", 1).queryParam("symbol", "USD").toUriString();
         assertThat(restTemplate.getForObject(url, CurrencyConversion.class)).isNotNull();
         assertThat(restTemplate.getForObject(url, CurrencyConversion.class)).isNotNull();
         assertThat(restTemplate.getForObject(url, CurrencyConversion.class)).isNotNull();
@@ -96,21 +96,21 @@ public class ApplicationTests {
 
     @Test
     public void testInvalidSymbol() {
-        final String url = url().path("/api/convert").queryParam("amount", 1).queryParam("symbol", "FOO").toUriString();
+        final String url = url().path("/api/v1/convert").queryParam("amount", 1).queryParam("symbol", "FOO").toUriString();
         final ResponseEntity<String> resp = restTemplate.getForEntity(url, String.class);
         assertThat(resp.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
     @Test
     public void testUnsupportedSymbol() {
-        final String url = url().path("/api/convert").queryParam("amount", 1).queryParam("symbol", "AUD").toUriString();
+        final String url = url().path("/api/v1/convert").queryParam("amount", 1).queryParam("symbol", "AUD").toUriString();
         final ResponseEntity<String> resp = restTemplate.getForEntity(url, String.class);
         assertThat(resp.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
     @Test
     public void testInvalidAmount() {
-        final String url = url().path("/api/convert").queryParam("amount", "A").queryParam("symbol", "EUR").toUriString();
+        final String url = url().path("/api/v1/convert").queryParam("amount", "A").queryParam("symbol", "EUR").toUriString();
         final ResponseEntity<String> resp = restTemplate.getForEntity(url, String.class);
         assertThat(resp.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
@@ -123,7 +123,7 @@ public class ApplicationTests {
                         .withHeader(HttpHeaders.EXPIRES,
                                 Instant.now().atOffset(ZoneOffset.UTC).plusSeconds(14400).format(DateTimeFormatter.RFC_1123_DATE_TIME))));
 
-        final String url = url().path("/api/convert").toUriString();
+        final String url = url().path("/api/v1/convert").toUriString();
         final ResponseEntity<CurrencyConversion> resp = restTemplate.getForEntity(url, CurrencyConversion.class);
         assertThat(resp.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(resp.getBody()).isNotNull();

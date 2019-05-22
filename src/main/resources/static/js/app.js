@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+if (apiKey.length != 0) {
+    axios.defaults.headers.common["X-APIKEY"] = apiKey;
+}
+
 var app = new Vue({
     data: {
         ready: false,
@@ -27,7 +31,7 @@ var app = new Vue({
     },
     methods: {
         onConvert: function () {
-            var url = "/api/convert?amount=" + this.amount + "&symbol=" + this.symbol;
+            var url = apiEndpoint + apiEnv + "/api/v1/convert?amount=" + this.amount + "&symbol=" + this.symbol;
             axios.get(url).then(resp => {
                 this.amountResult = resp.data.output.amount.toLocaleString(
                     undefined,
