@@ -23,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -146,12 +147,16 @@ class CurrencyAmount {
 class AppConfig {
     @Bean
     OkHttpClient httpClient() throws IOException {
+        final HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
         // Setup an HTTP cache to reduce API calls to external endpoints.
         final Cache cache = new Cache(Files.createTempDirectory("httpcache-").toFile(), 10 * 1024);
         return new OkHttpClient.Builder()
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(10, TimeUnit.SECONDS)
                 .cache(cache)
+                .addInterceptor(loggingInterceptor)
                 .build();
     }
 
