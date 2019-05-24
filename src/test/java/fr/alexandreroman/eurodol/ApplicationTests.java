@@ -60,7 +60,7 @@ public class ApplicationTests {
 
     @Test
     public void testCurrencyConverterEndpoint() {
-        stubFor(get(urlEqualTo("/latest?base=USD&symbols=EUR"))
+        stubFor(get(urlEqualTo("/latest?base=USD"))
                 .willReturn(okJson("{\"base\":\"USD\",\"rates\":{\"EUR\":0.8950948801},\"date\":\"2019-05-17\"}")
                         .withHeader(HttpHeaders.CACHE_CONTROL, "public, max-age=14400")
                         .withHeader(HttpHeaders.EXPIRES,
@@ -75,12 +75,12 @@ public class ApplicationTests {
         assertThat(conv.getInput()).isEqualTo(new CurrencyAmount(BigDecimal.ONE, Currency.getInstance("USD")));
         assertThat(conv.getOutput()).isEqualTo(new CurrencyAmount(BigDecimal.valueOf(0.8950948801), Currency.getInstance("EUR")));
 
-        verify(1, getRequestedFor(urlEqualTo("/latest?base=USD&symbols=EUR")));
+        verify(1, getRequestedFor(urlEqualTo("/latest?base=USD")));
     }
 
     @Test
     public void testCache() {
-        stubFor(get(urlEqualTo("/latest?base=USD&symbols=EUR"))
+        stubFor(get(urlEqualTo("/latest?base=USD"))
                 .willReturn(okJson("{\"base\":\"USD\",\"rates\":{\"EUR\":0.8950948801},\"date\":\"2019-05-17\"}")
                         .withHeader(HttpHeaders.CACHE_CONTROL, "public, max-age=14400")
                         .withHeader(HttpHeaders.EXPIRES,
@@ -91,7 +91,7 @@ public class ApplicationTests {
         assertThat(restTemplate.getForObject(url, CurrencyConversion.class)).isNotNull();
         assertThat(restTemplate.getForObject(url, CurrencyConversion.class)).isNotNull();
 
-        verify(1, getRequestedFor(urlEqualTo("/latest?base=USD&symbols=EUR")));
+        verify(1, getRequestedFor(urlEqualTo("/latest?base=USD")));
     }
 
     @Test
@@ -117,7 +117,7 @@ public class ApplicationTests {
 
     @Test
     public void testDefaultInputValues() {
-        stubFor(get(urlEqualTo("/latest?base=EUR&symbols=USD"))
+        stubFor(get(urlEqualTo("/latest?base=EUR"))
                 .willReturn(okJson("{\"base\":\"EUR\",\"rates\":{\"USD\":1.1172},\"date\":\"2019-05-17\"}")
                         .withHeader(HttpHeaders.CACHE_CONTROL, "public, max-age=14400")
                         .withHeader(HttpHeaders.EXPIRES,
@@ -132,7 +132,7 @@ public class ApplicationTests {
         assertThat(conv.getInput()).isEqualTo(new CurrencyAmount(BigDecimal.ONE, Currency.getInstance("EUR")));
         assertThat(conv.getOutput()).isEqualTo(new CurrencyAmount(BigDecimal.valueOf(1.1172), Currency.getInstance("USD")));
 
-        verify(1, getRequestedFor(urlEqualTo("/latest?base=EUR&symbols=USD")));
+        verify(1, getRequestedFor(urlEqualTo("/latest?base=EUR")));
     }
 
     @Test

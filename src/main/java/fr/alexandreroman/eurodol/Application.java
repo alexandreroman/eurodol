@@ -112,7 +112,6 @@ class CurrencyConverterService {
         final String url = UriComponentsBuilder.fromHttpUrl(exchangeRatesEndpoint)
                 .path("/latest")
                 .queryParam("base", input.getSymbol().getCurrencyCode())
-                .queryParam("symbols", outputCurrency.getCurrencyCode())
                 .toUriString();
 
         log.debug("Getting exchange rate between {} and {}", input.getSymbol(), outputCurrency);
