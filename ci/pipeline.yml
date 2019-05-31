@@ -1,0 +1,112 @@
+resources:  
+  - name: repo
+    type: git
+    source:
+      uri: ((git-uri))
+      branch: master
+      username: ((git-username))
+      password: ((git-password))
+  - name: version
+    type: semver
+    source:
+      initial_version: 1.0.0
+      driver: git
+      uri: ((git-ci-uri))
+      branch: master
+      file: ((app))-version
+      git_user: "CI Bot <cibot@foobar.com>"
+      username: ((git-username))
+      password: ((git-password))
+  # - name: bintray
+  #   type: bintray
+  #   source:
+  #     subject_name: ((bintray-subject))
+  #     repo_name: ((bintray-repo))
+  #     package_name: ((bintray-package))
+  #     username: ((bintray-username))
+  #     api_key: ((bintray-apikey))
+  - name: github-prerelease
+    type: github-release
+    source:
+      owner: ((github-owner))
+      repository: ((github-repo))
+      access_token: ((github-access-token))
+      release: false
+      pre_release: true
+jobs:
+  - name: build
+    plan:
+    - get: repo
+      trigger: true
+    - get: version
+      params:
+        bump: patch
+    - task: build
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: adoptopenjdk
+            tag: 8-jdk-hotspot
+        params:
+          APP: ((app))
+        inputs:
+          - name: repo
+          - name: version
+        outputs:
+          - name: build
+        caches:
+          - path: .m2
+        run:
+          path: "repo/ci/tasks/build.sh"
+    - put: github-prerelease
+      params:
+        name: build/release
+        tag: version/number
+        tag_prefix: v
+        globs: [ "build/((app))-*.jar" ]
+    # - task: bintray-push
+    #   config:
+    #     platform: linux
+    #     image_resource:
+    #       type: docker-image
+    #       source:
+    #         repository: concourse/buildroot
+    #         tag: curl
+    #     params:
+    #       APP: ((app))
+    #       BINTRAY_USERNAME: ((bintray-username))
+    #       BINTRAY_APIKEY: ((bintray-apikey))
+    #       BINTRAY_SUBJECT: ((bintray-subject))
+    #       BINTRAY_PACKAGE: ((bintray-package))
+    #       BINTRAY_REPO: ((bintray-repo))
+    #     inputs:
+    #       - name: version
+    #       - name: ((app)).jar
+    #     run:
+    #       path: "repo/ci/tasks/bintray-push.sh"
+    # - put: bintray
+    #   params:
+    #     from: ((app))-*.jar
+    #     version_file: version/number
+    # - put: version
+  
+        
+  #   - put: github-release
+  #     params:
+  #       name: eurodol.jar
+  #       tag: version/number
+  #       tag_prefix: v
+  #   - task: 
+  #     config:
+  #       platform: linux
+  #       image_resource:
+  #         type: docker-image
+  #         source:
+  #           repository: maven
+  #           tag: 3.6-jdk-8-slim
+  #       inputs:
+  #       - name: 
+  #       run:
+  #         path: "code/ci/tasks/deploy.sh"
