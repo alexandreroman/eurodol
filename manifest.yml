@@ -1,7 +1,6 @@
 ---
 applications:
   - name: eurodol
-    path: target/eurodol.jar
     random-route: true
     health-check-type: http
     health-check-http-endpoint: /actuator/health
